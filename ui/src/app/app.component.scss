@@ -1,0 +1,26 @@
+.nav-bar {
+  background-color: #036bc0;
+}
+
+.nav-bar a {
+  color: #fff;
+}
+
+.nav-bar .mat-tab-label-active {
+  border-bottom: 4px solid #fff;
+  opacity: 1;
+}
+
+.selectedSecurity,.selectedSecurity>mat-icon{
+    background-color:  #036bc0;
+    color:white;
+}
+
+mat-menu:hover{
+background-color: lightgray;
+color:black;
+}
+
+.nounderline {
+  text-decoration: none !important
+}

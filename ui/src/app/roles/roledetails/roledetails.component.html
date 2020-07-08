@@ -1,0 +1,194 @@
+<div class="success-popup" *ngIf="showMessagePopup && showMessagePopup?.show"
+[ngClass]="{'error-popup-bg': showMessagePopup?.status == false}">
+<p>{{showMessagePopup?.message}}</p>
+</div>
+
+<div class="container-fluid">
+  <div class="row m-0 p-0">
+    <div class="col-12 pt-1 header" id="divRoleNameHeader">
+      <label *ngIf="rolesService.selectedRoleId.value===0">Create New Role</label>
+      <label *ngIf="roleDetails && rolesService.selectedRoleId.value!=0">Role: {{roleDetails.RoleName}}</label>
+    </div>
+    <div class="col-12 pt-4">
+      <form #roleForm="ngForm" [formGroup]="roleMappingForm" (ngSubmit)="roleForm.resetForm();" autocomplete="off">
+        <mat-form-field class="col-3" id="formfieldRoleName">
+          <input matInput maxlength="50" formControlName="RoleName" placeholder="Role Name" required>
+          <mat-error *ngIf="roleMappingForm?.controls?.RoleName?.hasError('required')" id="errorNameRequired">Role Name
+            <strong>required</strong></mat-error>
+        </mat-form-field>
+        <mat-form-field class="col-3" id="formfieldRoleDescription">
+          <textarea matInput maxlength="50" rows="1" cols="10" formControlName="RoleDescription"
+            placeholder="Role Description" required></textarea>
+          <mat-error id="errorDescriptionRequired">Role Description <strong>required</strong></mat-error>
+        </mat-form-field>
+        <button mat-raised-button class="col-1 mr-3 button" [disabled]="roleMappingForm.invalid" id="buttonRoleSaveUpdate"
+          (click)="rolesService.selectedRoleId.value ? OnUpdateClick() :OnSaveClick()">{{rolesService.selectedRoleId.value ? 'Update' : 'Save'}}</button>
+        <button mat-raised-button class="col-1 mat-button button" type="submit" id="buttonRoleCancel"
+          (click)="OnCancelClick()">Cancel</button>
+      </form>
+    </div>
+    <div class="col-12 pt-4">
+      <mat-tab-group class="mat-tab-group border"  [(selectedIndex)]="selectedTabIndex" id="tabGroupRoles">
+        <mat-tab>
+          <ng-template matTabLabel>
+            <span>Site Mapping</span>
+          </ng-template>
+          <div class="row m-0 p-0 overflow-hidden" style="height: 60vh;" id="tabSiteMapping">
+            <div class="col-5 mt-2 overflow-auto" *ngIf="rolesService.siteTreeErrorMessage.value==='' && siteTreeData" style="height:98%;">
+              <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+                <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+                  <button mat-icon-button disabled></button>
+                  <mat-checkbox  color="primary"
+                    [checked]="checklistSelection.isSelected(node)" (change)="todoLeafItemSelectionToggle(node)"  
+                    matTooltip={{node.NodeName}}>
+                   <span class="col-12 text-truncate"> {{node.NodeName}} </span></mat-checkbox>
+                </mat-tree-node>
+                <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                  <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+                    <mat-icon class="mat-icon-rtl-mirror">
+                      {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                    </mat-icon>
+                  </button>
+                  <mat-checkbox [checked]="descendantsAllSelected(node)"
+                    [indeterminate]="descendantsPartiallySelected(node)" (change)="todoItemSelectionToggle(node)"
+                    matTooltip={{node.NodeName}}>
+                    <span class="col-12"> {{node.NodeName}} </span></mat-checkbox>
+                </mat-tree-node>
+              </mat-tree>              
+            </div>
+            <div class="col-5 mt-2 overflow-auto" style="height: 60vh;" *ngIf="rolesService.siteTreeErrorMessage.value!=''">
+              <label  style="color:red;">{{rolesService.siteTreeErrorMessage.value}}</label>
+            </div>            
+            <div class="col-7" style="height: 98%;">
+              <div class="row mt-2 p-2 border header">
+                <div class="col-6 text-center">Application</div>
+                <div class="col-6 text-center">Available Privileges</div>
+              </div>
+              <div class="row" style="height:90%">                
+                <div class="col-6 p-1 m-0 border overflow-auto" style="height: 98%;">
+                  <div class="row m-0 pt-2  pb-2 border-bottom mt-0 applicationlist"  
+                  [ngClass]="{'applicationActive':selectedApplicationId===application.ApplicationId}" 
+                  *ngFor="let application of applicationList" (click)="selectedApplicationId=application.ApplicationId"
+                  id="divRoleApplication{{application.ApplicationId}}">
+                    <span class="row pl-1 w-100" matBadge={{GetSelectedAppPrivileges(application.ApplicationId)}}
+                      [matBadgeHidden]="GetSelectedAppPrivileges(application.ApplicationId)==0" 
+                      matBadgeOverlap="true"
+                      matBadgeSize="small" matTooltip={{application.ApplicationName}}>
+                      <span class="col-12 text-truncate">{{application.ApplicationName}}</span>
+                    </span>
+                    </div>
+                </div>
+                <!-- <div class="col-6 p-0 m-0 border overflow-auto" style="height: 98%;">
+                  <div class="row m-0 pt-2 d-none" [ngClass]="{'d-block':selectedApplicationId===application.ApplicationId}" 
+                  *ngFor="let application of applicationList">
+                  <div class="row m-0">
+                      <mat-checkbox class="col-12 " #checkbox
+                        *ngFor="let privilege of GetApplicationPrivileges(application.ApplicationId)"
+                        [checked]="CheckMappedDetails(privilege.Privilege.PrivilegeId)"
+                        (change)="PrivilegeSelectionChange(checkbox,privilege.Privilege)">
+                        {{privilege.Privilege.PrivilegeName}}</mat-checkbox>
+                    </div>
+                  </div>
+              </div> -->
+                <div class="col-6 p-0 m-0 border overflow-auto" style="height: 98%;">
+                  <div class="row m-0 pt-2 d-none" [ngClass]="{'d-block':selectedApplicationId===application.ApplicationId}" 
+                  *ngFor="let application of appPrivilegeList" id="divRoleAppPrivileges{{application.ApplicationId}}">
+                  <div class="row m-0">
+                      <mat-checkbox class="col-12 " #checkbox
+                        *ngFor="let privilege of application.Privileges"
+                        [checked]="CheckMappedDetails(privilege.Privilege.PrivilegeId)"
+                        (change)="PrivilegeSelectionChange(checkbox,privilege.Privilege)">
+                        {{privilege.Privilege.PrivilegeName}}</mat-checkbox>
+                    </div>
+                  </div>
+              </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="LDAP Groups" *ngIf="settingsService.selectedSecurityModel.value==='LDAP' || settingsService.selectedSecurityModel.value==='Imprivata'">
+          <div class="row m-0 p-0 overflow-hidden" style="height: 60vh;" id="tabRoleLdap">
+            <div class="col-6 mt-2 pr-0 border" style="height: 99%;">
+              <div class="row p-2 header" id="tabRoleLdapAvailable">
+                <div class="col-12 text-center"> LDAP Groups Available</div>               
+              </div>
+              <div class="overflow-auto p-0" style="height: 90%;">
+                <div class="row m-0 p-0" id="divRoleLdapSearch"> 
+                  <mat-form-field class="col-12">
+                    <mat-label>Search Group</mat-label>
+                    <input matInput type="text" maxlength="50" [(ngModel)]="searchText" (input)="onSearchGroupEvent()">
+                    <button mat-button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear"
+                      (click)="searchText=''">
+                      <mat-icon>close</mat-icon>
+                    </button>
+                    <button mat-button matPrefix mat-icon-button aria-label="Search">
+                      <mat-icon style="font-weight: bold;margin-right: 5px; font-size: large;">search</mat-icon>
+                    </button>
+                  </mat-form-field>
+                </div>
+                <mat-tree [dataSource]="dataSourceLdap" [treeControl]="treeLdapControl" *ngIf="!searchText">
+                  <mat-tree-node *matTreeNodeDef="let node  " matTreeNodeToggle matTreeNodePadding
+                    [style.display]="node.NodeType==='application'?'none':'flex'">
+                    <mat-checkbox *ngIf="node.NodeType==='Group'" class="checklist-leaf-node" color="primary"
+                      [checked]="checklistLdapSelection.isSelected(node)"
+                      (change)="todoLeafItemSelectionToggleLdap(node)">
+                      {{node.NodeName}}</mat-checkbox>
+                    <label *ngIf="node.NodeType!='Group'" style="color: red;">Not able to find Groups</label>
+                  </mat-tree-node>
+                  <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+                    <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+                      <mat-icon class="mat-icon-rtl-mirror">
+                        {{treeLdapControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                      </mat-icon>
+                    </button>
+                    {{node.NodeName}}
+                  </mat-tree-node>
+                </mat-tree>
+                <div *ngIf="searchText" class="divSearchGroupContainer">
+                  <div *ngFor="let filteredGroup of searchResult">
+                    <mat-checkbox color="primary" (change)="checkSearchSelected(filteredGroup,$event)"
+                      [checked]="onSearchChecked(filteredGroup)">
+                      {{filteredGroup.LdapName}} - {{filteredGroup.GroupName}}
+                    </mat-checkbox>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-6 mt-2 pr-0 pl-0 border" style="height: 99%;">
+              <div class="row p-2 header" id="tabRoleLdapMapped">
+                <div class="col-12 text-center">LDAP Groups Mapped</div>              
+              </div>
+              <div class="overflow-auto p-0 m-0" style="height: 90%;">
+                <div class="row m-0 p-0 border-bottom" *ngFor="let selectedGroup of GetSelectedGroup(checklistLdapSelection.selected)">
+                  <label class="col-6 pl-2">{{selectedGroup.LdapName}}</label>
+                  <label class="col-6 p-0">{{selectedGroup.GroupName}}</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Users" *ngIf="settingsService.selectedSecurityModel.value==='ISAS'" >
+          <div class="row m-0 p-0 overflow-hidden" style="height: 60vh;" id="tabRoleUsers">
+            <div class="col-6 mt-2 p-0 m-0 border" style="height: 99%;">
+              <div class="row m-0 p-2 header" id="divRoleUsersHeader">
+                <div class="col-12 text-center">iSAS Users</div>                 
+              </div>
+              <div class="overflow-auto p-0" style="height: 85%;">
+                <div class="row m-0">
+                <mat-checkbox class="col-12" *ngFor="let user of this.usersService.userInfoList.value"
+                  [checked]="CheckSelectedUser(user.User.UserId)"
+                  (change)="UserSelectionChange($event, user.User.UserId)" id="checkboxRoleUser{{user.User.UserId}}">{{user.User.UserName}}
+                </mat-checkbox>
+              </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+
+
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-clip-rotate-pulse">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

@@ -1,0 +1,105 @@
+::ng-deep {
+  mat-tab-header {
+    background-color: #036bc0 !important;
+    color: #fff;
+  }
+
+  .mat-tab-label-content {
+    color: #fff;
+  }
+
+  .mat-tab-label-active {
+    border-bottom: 4px solid #fff;
+    opacity: 1 !important;
+  }
+
+  .mat-checkbox-checked .mat-checkbox-background {
+    background-color: #036bc0 !important
+  }
+
+  .mat-checkbox-checked.mat-accent .mat-checkbox-indeterminate.mat-accent,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #036bc0 !important
+  }
+
+  .mat-tree-node {
+    min-height: 30px !important;
+  }
+
+  textarea.mat-input-element {
+    padding: 0px 0 !important;
+  }
+
+  textarea {
+    resize: none !important;
+  }
+  
+  .icon-expand {
+    line-height: 20px !important;
+  }
+  .icon-remove {
+    line-height: 16px !important;
+  }
+  .mat-badge-small.mat-badge-above .mat-badge-content{
+    top:-8px !important
+  }
+}
+
+// .divSitesContainer {
+//   margin: 2% 10% 2% 2%;
+//   height: 75%;
+//   border: 1px solid black;
+// }
+
+// .divRoleContainer,
+// .divUserContainer,
+// .divLdapGroupContainer {
+//   height: 65vh;
+//   width: 100%;
+//   overflow: auto;
+// }
+
+// .divRoleTree {
+//   width: 35%;
+//   height: 95%;
+//   overflow: auto;
+//   padding-top: 1%;
+//   padding-left: 1%;
+//   float: left;
+// }
+
+/* New Styles*/
+.card-form{
+  margin: 2em auto;
+  padding: 1em 2em 1em 2em;
+  background: #fafafa;
+  border-radius: 10px;
+  border: 1px solid #ebebeb;
+  box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+.header {
+  background-color: #036bc0;
+  color: white;
+}
+
+.ldapgroup.active {
+  background-color: #036bc0;
+  color: white;
+}
+
+.ldapgroup:hover{
+  cursor: pointer;
+}
+
+.applicationActive {
+  background-color: #036bc0;
+  color: white;
+}
+
+.applicationlist {
+  &:hover:not(.applicationActive){
+    background-color: #ebebeb;
+  }
+  cursor: pointer;
+}

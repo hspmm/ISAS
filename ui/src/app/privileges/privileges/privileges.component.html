@@ -1,0 +1,111 @@
+<div class="container-fluid">
+  <div class="row m-0 p-0">
+  <div class="col-5 border mt-2 p-0 ml-4" style="height: 85vh;">
+    <div class="header col-12 p-2 text-center" id="treePrivilegesHeader">
+      Application Privileges
+    </div>
+    <div class="overflow-auto" style="height: 90%;" id="treePrivileges">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+        <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+          <!-- <button mat-icon-button disabled></button> -->
+          <mat-checkbox class="checklist-leaf-node" color="primary" [checked]="checklistSelection.isSelected(node)"
+            (change)="todoLeafItemSelectionToggle(node)">           
+            {{node.NodeName}}</mat-checkbox>
+        </mat-tree-node>
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+          <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <label>{{node.NodeName}}</label>
+        </mat-tree-node>
+      </mat-tree>
+    </div>
+  </div>
+  <div class="col-6 border mt-2 p-0 ml-2" style="height: 85vh;">
+    <mat-tab-group class="mat-tab-group" id="tabGroupPrivileges">
+      <mat-tab label="Roles">
+        <div class="overflow-auto" style="height: 75vh;" *ngIf="roleService.siteTreeErrorMessage.value==='' && roleService.siteInfo.value.length>0" id="tabPrivilegeRoles">
+          <mat-tree [dataSource]="dataSourceRole" [treeControl]="treeControl">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+              <mat-icon class="icon-remove" style="font-size: small;">remove</mat-icon>
+              <div *ngIf="node.NodeType=='role'" style="margin: 5px;">
+                <mat-icon>group</mat-icon>
+              </div>
+              <label>{{node.NodeName}}</label>
+            </mat-tree-node>
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+              <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+                <mat-icon class="mat-icon-rtl-mirror icon-expand">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              <!-- <label>{{node.NodeName}}</label> -->
+              <span matBadge="{{node.TotalCount}}"  [matBadgeHidden]="node.TotalCount==0" matBadgeOverlap="false" matBadgeSize="small" matTooltip={{node.NodeName}} >
+                {{node.NodeName}}
+              </span>
+            </mat-tree-node>
+          </mat-tree>
+        </div>
+        <div class="row m-0 p-0" style="height: 75vh;" *ngIf="roleService.siteTreeErrorMessage.value!=''">
+          <label style="color:red;">{{roleService.siteTreeErrorMessage.value}}</label>
+        </div>
+      </mat-tab>
+      <mat-tab label="Users" *ngIf="settingsService.selectedSecurityModel.value==='ISAS'">
+        <div class="overflow-auto" style="height: 75vh;" *ngIf="roleService.siteTreeErrorMessage.value==='' && roleService.siteInfo.value.length>0" id="tabPrivilegeUsers">
+          <mat-tree [dataSource]="dataSourceUser" [treeControl]="treeControl">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+              <mat-icon class="icon-remove" style="font-size: small;">remove</mat-icon>
+              <div *ngIf="node.NodeType=='user'" style="margin: 5px;">
+                <mat-icon>person</mat-icon>
+              </div>
+              <label>{{node.NodeName}}</label>
+            </mat-tree-node>
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+              <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              <!-- <label>{{node.NodeName}}</label> -->
+              <span matBadge="{{node.TotalCount}}"  [matBadgeHidden]="node.TotalCount==0" matBadgeOverlap="false" matBadgeSize="small" matTooltip={{node.NodeName}} >
+                {{node.NodeName}}
+              </span>
+            </mat-tree-node>
+          </mat-tree>
+        </div>
+        <div class="row m-0 p-0" style="height: 75vh;" *ngIf="roleService.siteTreeErrorMessage.value!=''">
+          <label style="color:red;">{{roleService.siteTreeErrorMessage.value}}</label>
+        </div>
+      </mat-tab>
+      <mat-tab label="LDAP Groups" *ngIf="settingsService.selectedSecurityModel.value==='LDAP' || settingsService.selectedSecurityModel.value==='Imprivata'">
+        <div class="overflow-auto" style="height: 75vh;" *ngIf="roleService.siteTreeErrorMessage.value==='' && roleService.siteInfo.value.length>0" id="tabPrivilegeGroup">
+          <mat-tree [dataSource]="dataSourceLdap" [treeControl]="treeControl">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+              <mat-icon class="icon-remove" style="font-size: small;">remove</mat-icon>
+              <div *ngIf="node.NodeType=='Ldap Group'" style="margin: 5px;">
+                <mat-icon>group</mat-icon>
+              </div>
+              <label>{{node.NodeName}}</label>
+            </mat-tree-node>
+            <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+              <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              <span matBadge="{{node.TotalCount}}"  [matBadgeHidden]="node.TotalCount==0" matBadgeOverlap="false" matBadgeSize="small" matTooltip={{node.NodeName}} >
+                {{node.NodeName}}
+              </span>
+            </mat-tree-node>
+          </mat-tree>
+        </div>
+        <div class="row m-0 p-0" style="height: 75vh;" *ngIf="roleService.siteTreeErrorMessage.value!=''">
+          <label style="color:red;">{{roleService.siteTreeErrorMessage.value}}</label>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+</div>

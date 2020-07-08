@@ -1,0 +1,104 @@
+/* New Styles*/
+.header {
+  background-color: #036bc0;
+  color: white;
+}
+
+.button {
+  background-color: #036bc0;
+  color: white;
+}
+
+textarea {
+  resize: none !important;
+}
+
+.applicationActive {
+  background-color: #036bc0;
+  color: white;
+}
+
+.applicationlist {
+  &:hover:not(.applicationActive){
+    background-color: #ebebeb;
+  }
+  cursor: pointer;
+}
+
+.success-popup {
+  z-index: 1;
+  position: absolute;
+  width: 20%;
+  padding: .5%;
+  background: #70a470;
+  color: white;
+  text-align: center;
+  right: 1%;
+  transition: all 0.4s ease;
+  box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.75);
+}
+
+.error-popup-bg {
+  background: #ec6b78;
+}
+
+// input,textarea{
+//   text-transform: capitalize;
+// }
+
+::ng-deep {
+  mat-tab-header {
+    background-color: #036bc0 !important;
+    color: #fff;
+  }
+
+  .mat-tab-label-content {
+    color: #fff;
+  }
+
+  .mat-tab-label-active {
+    border-bottom: 4px solid #fff;
+    opacity: 1 !important;
+  }
+
+  .mat-checkbox-checked .mat-checkbox-background {
+    background-color: #036bc0 !important;
+    border: 1px solid gray !important;
+  }
+
+  .mat-checkbox-checked.mat-accent .mat-checkbox-indeterminate.mat-accent,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #036bc0 !important
+  }
+
+  .mat-tree-node {
+    min-height: 30px !important;
+  }
+
+  .mat-checkbox-indeterminate .mat-checkbox-mixedmark {
+    transform: scaleX(1.1) scaleY(3.4) rotate(0) !important;
+    display: inline-block;
+  }
+
+  .mat-checkbox-mixedmark {
+    background-color: #036bc0 !important;
+    border-radius: 8px !important;
+  }
+
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #ffffff !important;
+    border: 2px solid gray !important;
+  }
+
+  .mat-icon-button .mat-icon {
+    line-height: 18px;
+  }
+
+  button:focus {
+    outline: none !important;
+  }
+
+  .applicationlist .mat-badge-small.mat-badge-above .mat-badge-content{
+    top:0px !important
+  }
+}

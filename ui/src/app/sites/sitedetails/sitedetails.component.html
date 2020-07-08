@@ -1,0 +1,189 @@
+<div class="container-fluid">
+  <div class="row m-0 p-0 border" >
+  <mat-tab-group class="mat-tab-group col-12 p-0 mt-2" id="tabGroupSite">
+    <mat-tab label="Roles">
+      <div class="row m-0 p-0" style="height: 80vh;" *ngIf="rolesService.siteTreeErrorMessage.value==='' && rolesService.siteInfo.value.length>0" id="tabSiteRoles">
+        <div class="col-6 overflow-auto" style="height: 100%;">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>          
+            <mat-icon class="icon-remove" style="font-size: small;">remove</mat-icon>
+            <!-- <div *ngIf="node.NodeType=='Roles'" style="margin: 5px;">
+              <mat-icon>group</mat-icon>
+            </div>
+            <label>{{node.NodeName}}</label> -->
+            <div *ngIf="node.NodeType=='Roles'" class="row m-0 p-1 ldapgroup"
+            (click)="OnRoleGroupSelected(node.NodeId,node.ParentId)"
+            [class.active]="selectedRoleId ===node.NodeId && selectedRoleParentId === node.ParentId" >  
+               <mat-icon>group</mat-icon>   
+                <span class="p-1">{{node.NodeName}}</span>
+           </div>
+           <div *ngIf="node.NodeType!='Roles'">
+             <label>{{node.NodeName}}</label>
+           </div>
+          </mat-tree-node>
+          <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+              <mat-icon class="mat-icon-rtl-mirror icon-expand">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <span matBadge="{{node.TotalCount}}" [matBadgeHidden]="node.TotalCount==0" matBadgeOverlap="false" matBadgeSize="small" matTooltip={{node.NodeName}} >
+              {{node.NodeName}}
+            </span>
+          </mat-tree-node>
+        </mat-tree>
+      </div>
+      <div class="col-5 overflow-auto" style="height: 100%;" *ngIf="mappedRoleApplication && mappedRoleApplication.length>0">
+        <div class="row mt-2 p-2 border header">
+          <div class="col-6 text-center">Application</div>
+          <div class="col-6 text-center">Available Privileges</div>
+        </div>
+        <div class="row" style="height:80%">                
+          <div class="col-6 p-1 m-0 border overflow-auto" style="height: 98%;">
+            <div class="row m-0 pt-2  pb-2 border-bottom mt-0 applicationlist"  
+            [ngClass]="{'applicationActive':selectedRoleApplicationId===application.ApplicationId}" 
+            *ngFor="let application of mappedRoleApplication" (click)="selectedRoleApplicationId=application.ApplicationId"
+            id="divSiteRoleApplication{{application.ApplicationId}}">
+             {{application.ApplicationName}}             
+              </div>
+          </div>
+          <div class="col-6 p-0 m-0 border overflow-auto" style="height: 98%;">
+            <div class="row m-0 pt-2 d-none" [ngClass]="{'d-block':selectedRoleApplicationId===application.ApplicationId}" 
+            *ngFor="let application of mappedRoleApplication">
+            <div class="row m-0 pt-2 border-bottom" *ngFor="let privilege of GetRoleApplicationPrivileges(application.ApplicationId)"
+            id="divSiteRoleAppPrivileges{{application.ApplicationId}}">              
+                  {{privilege.PrivilegeName}}
+              </div>
+            </div>
+          </div>
+        </div>      
+      </div>
+      </div>
+      <div class="row m-0 p-0" style="height: 80vh;" *ngIf="rolesService.siteTreeErrorMessage.value!=''">
+        <label  style="color:red;">{{rolesService.siteTreeErrorMessage.value}}</label>
+      </div>
+    </mat-tab>
+    <mat-tab label="Users" *ngIf="settingsService.selectedSecurityModel.value==='ISAS'">
+      <div class="row m-0 p-0" style="height: 80vh;" *ngIf="rolesService.siteTreeErrorMessage.value==='' && rolesService.siteInfo.value.length>0" id="tabSiteUsers">
+      <div class="col-6 overflow-auto" style="height: 100%;">
+        <mat-tree [dataSource]="userDataSource" [treeControl]="treeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+            <mat-icon class="icon-remove" style="font-size: small;">remove</mat-icon>
+            <!-- <div *ngIf="node.NodeType=='Users'" style="margin: 5px;">
+              <mat-icon>person</mat-icon>
+            </div>
+            <label>{{node.NodeName}}</label> -->
+            <div *ngIf="node.NodeType=='Users'" class="row m-0 p-1 ldapgroup"
+            (click)="OnUserGroupSelected(node.NodeId,node.ParentId)"
+            [class.active]="selectedUserId ===node.NodeId && selectedUserNodeId === node.ParentId" >  
+               <mat-icon>person</mat-icon>   
+                <span class="p-1">{{node.NodeName}}</span>
+           </div>
+           <div *ngIf="node.NodeType!='Users'">
+             <label>{{node.NodeName}}</label>
+           </div>
+          </mat-tree-node>
+          <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+              <mat-icon class="mat-icon-rtl-mirror icon-expand">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <span matBadge="{{node.TotalCount}}"  [matBadgeHidden]="node.TotalCount==0" matBadgeOverlap="false" matBadgeSize="small" matTooltip={{node.NodeName}} >
+              {{node.NodeName}}
+            </span>
+          </mat-tree-node>
+        </mat-tree>
+      </div>
+      <div class="col-5 overflow-auto" style="height: 100%;" *ngIf="mappedUserApplication && mappedUserApplication.length>0">
+        <div class="row mt-2 p-2 border header">
+          <div class="col-6 text-center">Application</div>
+          <div class="col-6 text-center">Available Privileges</div>
+        </div>
+        <div class="row" style="height:80%">                
+          <div class="col-6 p-1 m-0 border overflow-auto" style="height: 98%;">
+            <div class="row m-0 pt-2  pb-2 border-bottom mt-0 applicationlist"  
+            [ngClass]="{'applicationActive':selectedUserApplicationId===application.ApplicationId}" 
+            *ngFor="let application of mappedUserApplication" (click)="selectedUserApplicationId=application.ApplicationId"
+            id="divSiteUserApplication{{application.ApplicationId}}">
+             {{application.ApplicationName}}             
+              </div>
+          </div>
+          <div class="col-6 p-0 m-0 border overflow-auto" style="height: 98%;">
+            <div class="row m-0 pt-2 d-none" [ngClass]="{'d-block':selectedUserApplicationId===application.ApplicationId}" 
+            *ngFor="let application of mappedUserApplication">
+            <div class="row m-0 pt-2 border-bottom" *ngFor="let privilege of GetUserApplicationPrivileges(application.ApplicationId)"
+            id="divSiteUserAppPrivileges{{application.ApplicationId}}">              
+                  {{privilege.PrivilegeName}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="row m-0 p-0" style="height: 80vh;" *ngIf="rolesService.siteTreeErrorMessage.value!=''">
+        <label style="color:red;">{{rolesService.siteTreeErrorMessage.value}}</label>
+      </div>
+    </mat-tab>
+    <mat-tab label="LDAP Groups" *ngIf="settingsService.selectedSecurityModel.value==='LDAP'|| settingsService.selectedSecurityModel.value==='Imprivata'" >
+      <div class="row m-0 p-0" style="height: 80vh;" *ngIf="rolesService.siteTreeErrorMessage.value==='' && rolesService.siteInfo.value.length>0" id="tabSiteGroup">
+      <div class="col-6 overflow-auto" style="height: 100%;">
+        <mat-tree [dataSource]="ldapDataSource" [treeControl]="treeControl">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle matTreeNodePadding>
+            <mat-icon class="icon-remove" style="font-size: small;">remove</mat-icon>
+            <div *ngIf="node.NodeType=='Ldap Group'" class="row m-0 p-1 ldapgroup"
+             (click)="OnLdapGroupSelected(node.NodeId,node.ParentId)"
+             [class.active]="selectedLdapId ===node.NodeId && selectedLdapNodeId === node.ParentId" >  
+                <mat-icon>group</mat-icon>   
+                 <span class="p-1">{{node.NodeName}}</span>
+            </div>
+            <div *ngIf="node.NodeType!='Ldap Group'">
+              <label>{{node.NodeName}}</label>
+            </div>
+            
+          </mat-tree-node>
+          <mat-tree-node *matTreeNodeDef="let node; when: hasChild" matTreeNodePadding>
+            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'toggle ' + node.NodeName">
+              <mat-icon class="mat-icon-rtl-mirror icon-expand">
+                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+              </mat-icon>
+            </button>
+            <span matBadge="{{node.TotalCount}}"  [matBadgeHidden]="node.TotalCount==0" matBadgeOverlap="false" matBadgeSize="small" matTooltip={{node.NodeName}} >
+              {{node.NodeName}}
+            </span>
+          </mat-tree-node>
+        </mat-tree>
+      </div>
+      <div class="col-5 overflow-auto" style="height: 100%;" *ngIf="mappedLdapApplication && mappedLdapApplication.length>0">
+        <div class="row mt-2 p-2 border header">
+          <div class="col-6 text-center">Application</div>
+          <div class="col-6 text-center">Available Privileges</div>
+        </div>
+        <div class="row" style="height:80%">                
+          <div class="col-6 p-1 m-0 border overflow-auto" style="height: 98%;">
+            <div class="row m-0 pt-2  pb-2 border-bottom mt-0 applicationlist"  
+            [ngClass]="{'applicationActive':selectedLdapApplicationId===application.ApplicationId}" 
+            *ngFor="let application of mappedLdapApplication" (click)="selectedLdapApplicationId=application.ApplicationId"
+            id="divSiteGroupApplication{{application.ApplicationId}}">
+             {{application.ApplicationName}}             
+              </div>
+          </div>
+          <div class="col-6 p-0 m-0 border overflow-auto" style="height: 98%;">
+            <div class="row m-0 pt-2 d-none" [ngClass]="{'d-block':selectedLdapApplicationId===application.ApplicationId}" 
+            *ngFor="let application of mappedLdapApplication">
+            <div class="row m-0 pt-2 border-bottom" *ngFor="let privilege of GetLdapApplicationPrivileges(application.ApplicationId)"
+            id="divSiteGroupAppPrivileges{{application.ApplicationId}}">              
+                  {{privilege.PrivilegeName}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+      <div class="row m-0 p-0" style="height: 80vh;" *ngIf="rolesService.siteTreeErrorMessage.value!=''">
+        <label style="color:red;">{{rolesService.siteTreeErrorMessage.value}}</label>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  </div>
+</div>

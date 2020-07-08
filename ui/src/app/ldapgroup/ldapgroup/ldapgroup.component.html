@@ -1,0 +1,80 @@
+<div class="success-popup" *ngIf="showMessagePopup && showMessagePopup?.show"
+  [ngClass]="{'error-popup-bg': showMessagePopup?.status == false}">
+  <p>{{showMessagePopup?.message}}</p>
+</div>
+
+<div class="container-fluid">
+<div class="row m-0 p-0">
+    <div class="col-12 ">    
+      <form class="col-7 border card-form justify-content-center" #userForm="ngForm" [formGroup]="userSearchForm" autocomplete="off">
+        <mat-form-field class="col-3">
+          <mat-label  id="labelDomain">Domain</mat-label>
+          <mat-select formControlName="DomainName" (selectionChange)="onLdapDomainChange($event)" id="selectDomain">
+            <mat-option *ngFor="let domain of availableDomain" [value]="domain.LdapConfigId">
+              {{domain.Domain}}
+            </mat-option>
+          </mat-select> 
+        </mat-form-field>
+        <mat-form-field class="col-3">
+          <mat-label  id="labelGroup">Group</mat-label>
+          <mat-select formControlName="GroupName"  id="selectGroup">
+            <mat-option *ngFor="let group of availableDomainGroups?.Ldap?.LdapGroups" [value]="group.Group">
+              {{group.Group.GroupName}}
+            </mat-option>
+          </mat-select> 
+        </mat-form-field>
+        <mat-form-field class="col-3">
+          <mat-label  id="labelFilter">Filter</mat-label>
+          <input matInput maxlength="50" formControlName="Filter" placeholder="Ex. *, Miz*"  id="inputFilter">          
+        </mat-form-field>
+        <button mat-raised-button class="col-3 button text-truncate overflow-hidden" type="button" [disabled]="userForm.invalid"
+        (click)="SearchLdapUserClick()"  id="buttonLookup">Lookup Users</button>
+      </form>   
+    </div>
+    <div class="col-12"> 
+      <mat-form-field class="col-12">
+        <mat-label  id="labelFilter">Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+      </mat-form-field>
+      <div class="col-12">
+      <div class="mat-elevation-z8">
+        <table class="col-12" mat-table [dataSource]="dataSource" matSort  id="tableResult"> 
+      
+          <!-- Domain Column -->
+          <ng-container matColumnDef="domain">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Domain </th>
+            <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.domain}} </td>
+          </ng-container>
+
+          <!-- Group Column -->
+          <ng-container matColumnDef="group">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Group </th>
+            <td mat-cell *matCellDef="let row" [style.color]="row.color"> {{row.group}} </td>
+          </ng-container>
+
+          <!-- Name Column -->
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.name}} </td>
+          </ng-container>  
+
+           <!-- Principal Name Column -->
+           <ng-container matColumnDef="principalname">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> Principal Name </th>
+            <td mat-cell *matCellDef="let row"> {{row.principalname}} </td>
+          </ng-container>    
+          
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+          </tr>
+        </table>      
+        <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+      </div>
+    </div>      
+    </div>
+</div>
+</div>
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-clip-rotate-pulse">
+    <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

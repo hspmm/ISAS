@@ -1,0 +1,138 @@
+<!-- <div class="success-popup" *ngIf="showMessagePopup && showMessagePopup?.show"
+  [ngClass]="{'error-popup-bg': showMessagePopup?.status == false}">
+  <p>{{showMessagePopup?.message}}</p>
+</div> -->
+<div class="container-fluid m-0 p-0">
+  <div class="row m-0 p-0" *ngIf="settingsService.selectedSecurityModel.value==='LDAP' || settingsService.selectedSecurityModel.value==='Imprivata'">
+    <div class="col-12" >
+      <form class="col-5 card-form justify-content-center" #userForm="ngForm" [formGroup]="userSearchForm" autocomplete="off">
+        <mat-form-field class="col-7 col-lg-8" id="formfieldLdapUserSearch">
+          <mat-label>Search LDAP User</mat-label>
+          <input matInput maxlength="50" formControlName="UserName">
+          <button mat-button type="button" *ngIf="userSearchForm?.controls?.UserName?.value?.trim().length>0" matSuffix
+            mat-icon-button aria-label="Clear" (click)="userSearchForm.controls.UserName.setValue('')" >
+            <mat-icon>close</mat-icon>
+          </button>
+        </mat-form-field>
+        <button mat-raised-button type="submit" class="col-5 col-lg-4 text-truncate overflow-hidden button"
+          [disabled]="userSearchForm?.controls?.UserName?.value?.trim().length===0"
+          (click)="SearchLdapUserClick()" id="buttonLdapUserSearch">Lookup User</button>
+      </form>
+    </div>
+    <div class="col-12 " >    
+      <mat-form-field class="col-12">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Ex. Mia">
+      </mat-form-field>    
+      
+      <div class="mat-elevation-z8">
+      <table class="col-12" mat-table [dataSource]="dataSource" matSort id="tableLdapUsers">
+        <!-- username Column -->
+        <ng-container matColumnDef="username">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Username </th>
+          <td mat-cell *matCellDef="let row">
+            <label *ngIf="row?.username?.length>0">{{row.username}}</label>
+            <label *ngIf="row?.username?.length===0">-</label>
+          </td>
+        </ng-container>
+
+        <!-- Domain Column -->
+        <ng-container matColumnDef="domain">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Domain </th>
+          <td mat-cell *matCellDef="let row"> {{row.domain}} </td>
+        </ng-container>
+
+        <!-- Principal Name Column -->
+        <ng-container matColumnDef="principalname">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header> Principal Name </th>
+          <td mat-cell *matCellDef="let row">
+            <label *ngIf="row?.principalname?.length>0">{{row.principalname}}</label>
+            <label *ngIf="row?.principalname?.length===0">-</label>
+          </td>
+        </ng-container>
+
+        <!-- Assigned Roles Column -->
+        <ng-container matColumnDef="assignedroles">
+          <th mat-header-cell *matHeaderCellDef > Assigned Roles </th>
+          <td mat-cell *matCellDef="let row">
+            <label *ngIf="row?.assignedroles?.length>0">
+              <label class="row m-0 w-100 p-1" *ngFor="let role of row.assignedroles">
+                <mat-icon>group</mat-icon>
+                <span>{{role.RoleName}}</span>
+              </label>
+            </label>
+            <label *ngIf="row?.assignedroles?.length===0">-</label>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;">
+        </tr>
+      </table>
+      <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" showFirstLastButtons></mat-paginator>
+      </div>
+    </div>
+  </div>
+  <div class="row m-0 p-0" *ngIf="settingsService.selectedSecurityModel.value==='ISAS'">
+    <div class="col-12 col-md-2 mt-2">
+      <div class="m-0 border rounded overflow-hidden" style="height:80vh">
+        <div class="row m-0 w-100 p-2 header" id="divUserListHeader">
+          <mat-icon>group</mat-icon>
+          <span> Users List</span>
+        </div>
+        <div class="dropdown-divider mt-0"></div>
+        <div class="col-12 mb-2 p-0" style="height: 10%;" id="divUserListSearch" >
+          <mat-form-field class="col-12">
+            <mat-label>Search User</mat-label>
+            <input matInput type="text" maxlength="50" [(ngModel)]="searchText" (input)="onSearchUserEvent()">
+            <button mat-button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear"
+              (click)="searchText=''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <button mat-button matPrefix mat-icon-button aria-label="Search">
+              <mat-icon style="font-weight: bold;margin-right: 5px; font-size: large;">search</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class=" overflow-auto" style="height: 78%;" *ngIf="!searchText">
+          <div class="row m-0 p-2 border-bottom mt-0 user-list" *ngFor="let user of usersList"
+            (click)="OnUserClick(user.User.UserId)"
+            [class.active]="usersService.selectedUserId.value===user.User.UserId" id="divUserList{{user.User.UserId}}">
+            <div class="p-0 text-truncate" [ngClass]="{'col-10':usersService.selectedUserId.value===user.User.UserId}"
+              matTooltip={{user.User.UserName}}>{{user.User.UserName}}</div>
+            <mat-icon class="p-0 d-flex justify-content-end"
+              [ngClass]="{'active col-2':usersService.selectedUserId.value===user.User.UserId}"
+              (click)="OnUserDeleteClick(user.User.UserId,user.User.UserName)">delete</mat-icon>
+          </div>
+        </div>
+        <div class=" overflow-auto" style="height: 78%;" *ngIf="searchText">
+          <div class="row m-0 p-2 border-bottom mt-0 user-list" *ngFor="let user of searchResult"
+            (click)="OnUserClick(user.User.UserId)"
+            [class.active]="usersService.selectedUserId.value===user.User.UserId" id="divUserList{{user.User.UserId}}">
+            <div class="p-0 text-truncate" [ngClass]="{'col-10':usersService.selectedUserId.value===user.User.UserId}"
+              matTooltip={{user.User.UserName}}>{{user.User.UserName}}</div>
+            <mat-icon class="p-0 d-flex justify-content-end"
+              [ngClass]="{'active col-2':usersService.selectedUserId.value===user.User.UserId}"
+              (click)="OnUserDeleteClick(user.User.UserId,user.User.UserName)" id="iconUserDelete{{user.User.UserId}}">delete</mat-icon>
+          </div>
+        </div>
+        <label *ngIf="!usersList">Loading...</label>
+        <label *ngIf="usersList && usersList.length==0">{{statusMessage}}</label>
+      </div>
+      <div class="row m-0 w-100 p-1 pt-2" id="divUserListAdd">
+        <button mat-raised-button class="col-12 button text-truncate overflow-hidden"
+          (click)="OnNewUserCreationClick()">
+          <mat-icon>group_add</mat-icon>
+          Create New User
+        </button>
+      </div>
+    </div>
+    <div class="col-12 col-md-10 mt-2 p-0 m-0">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-clip-rotate-pulse">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>

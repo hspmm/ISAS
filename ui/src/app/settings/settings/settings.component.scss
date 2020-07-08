@@ -1,0 +1,419 @@
+// .full-panel {
+//   height: 90%;
+//   width: 97%;
+//   float: left;
+//   border: 1px solid gray;
+//   margin: 1%;
+//   //font-size: 14px;  
+// }
+// .title{
+//   background-color: #036bc0;
+//   color: white;
+//   //vertical-align: middle;
+//   height: 5%;
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   //padding: 0.5% 0;
+//   //text-align: center;
+// }
+
+// .top-panel {
+//   margin-bottom: 4%;
+//   width: 40%;
+//   height: 8%;
+//   float:left;
+//   margin-left: 30%; 
+//   margin-top: 2%;
+//   border: 1px solid lightgray;
+// }
+
+// .bottom-panel {
+//   width: 95%;
+//   height: 69%;
+//   border: gray solid 1px;
+//   margin-left: 2%;
+//   float:left;
+// }
+
+// /* Tab Container*/
+// .divTabContainer {
+//   width: 100%;
+//   height: 100%;
+//   overflow: auto;
+// }
+
+// .divSecurityModel {
+//   width: 55%;
+//   margin-left: 5%;  
+//   float: left;  
+//   padding-top: 3%;
+// }
+
+// .divSecurityModel>label {
+//   margin-left: 3%;
+//   padding-right: 1%;
+// }
+
+// .divSecurityModel>mat-radio-group>mat-radio-button {
+//   margin-left: 3%;
+// }
+
+// .normal-full-width {
+//   width: 30%;
+//   margin: 2%;
+//   float: left;
+//   //padding-top: 1%;
+// }
+
+// .normal-full-width-imprivata, .normal-full-width-ldap {
+//   width: 100%;
+//   margin: 1%;
+//   //padding-top: 1%;
+// }
+
+// .mat-button {
+//   width: 42%;
+//   margin-left: 3%;
+//   background-color: #036bc0;
+//   color: white;
+// }
+
+// .form-container,.imprivata-form-container,.ldap-form-container {
+//   display: flex;
+//   flex-direction: column;
+// }
+// .imprivata-form-container,.ldap-form-container{
+//   height: 100%;
+//   width: 77%;
+//   margin-left: 23%;
+//   overflow: auto;
+// }
+
+// .form-container>* {
+//   width: 35%;
+//   margin-top: 2%;
+// }
+
+// .imprivata-form-container>*,.ldap-form-container>* { 
+//   width: 50%;
+//   margin-top: 1%;
+// }
+// .normal-form-full-width{
+//   width: 100%;
+//   margin: 1% 5%;
+// }
+
+// .mat-form-button {
+//   width: 30%;
+//   margin-left: 3%;
+//   background-color: #036bc0;
+//   color: white;
+// }
+// .imprivata-form-container .mat-button,.ldap-form-container .mat-button {
+//   width: 30%;
+//   margin-left: 3%;
+// }
+
+// .success-popup {
+//   position: absolute;
+//   width: 20%;
+//   padding: .5%;
+//   background: #70a470;
+//   color: white;
+//   text-align: center;
+//   right: 1%;
+//   transition: all 0.4s ease;
+//   box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.75);
+// }
+
+// .error-popup-bg {
+//   background: #ec6b78;
+// }
+
+// .divApplicationDetails{
+//   height: 80%;
+//   width:90%;
+//   margin:2% 5%;
+//   border: 1px solid gray;  
+// }
+// .divApplicationHeader{
+//   height: 8%;
+//   width:100%;
+//   text-align: center;
+//   background-color: #036bc0 ;
+//   color: #fff;
+//   //padding-top: 0.5%; 
+//   display: table;
+// }
+
+// .divApplicationContent{
+//   height: 91%;
+//   width:100%;
+//   margin-top: 0.2%;
+//   font-size: 14px;
+// }
+
+// .divApplicationTitle{
+//   height:100%;
+//   width:20%;
+//   //float:left;  
+//   border-right:1px black solid;
+//   display: table-cell;
+//   vertical-align: middle;
+// }
+
+// .divApplicationList,.divVersionList,.divPrivilegeList,.divDetailsList{
+//   height: 100% ;
+//   width: 24.8%;
+//   overflow-y: auto;
+//   border: 1px solid black;
+//   float: left;   
+// }
+
+// .divApplication,.divVersion,.divVersionPrivilege {
+//   height: 10% ;
+//   width: 98.5%;
+//   padding-left: 1%;  
+//   //display: table;
+//   border-bottom: 1px solid lightgray; 
+//   display: flex;
+//   align-items: center;
+// }
+// .divApplication>span, .divVersion>span, .divVersionPrivilege>span
+// {
+//   //height: 100%;
+//   width: 100%;
+//  // display: table-cell;
+//   vertical-align: middle; 
+//  text-overflow: ellipsis;
+//  overflow: hidden;
+//  white-space: nowrap;
+// }
+
+// .divApplication:hover,.divVersion:hover,.divVersionPrivilege:hover:not(.divNoVersionPrivilege) {
+//   background-color: lightgray;
+//   cursor: pointer;
+// }
+
+// .divApplication.active, .divVersion.active {
+//   background-color: #036bc0;
+//   color: white;
+// }
+
+// .divVersionContainer {
+//   width: 33%;
+//  // padding-left: 5%;
+//   //padding-top: 2%;
+//   height: 99.5% !important;
+//   border: 1px solid black;
+//   overflow: auto;
+
+// }
+
+// .divImprivataList,.divLdapList{
+// float:left;
+// height: 100%;
+// width:18%;
+// position: relative;
+// }
+
+// .divImprivataContainer,.divLdapContainer{
+// position: absolute;
+// height: 87%;
+// width:100%;
+// border: 1px solid black;
+// margin: 2%;
+// }
+
+// .divImprivataHeader,.divLdapHeader{
+//   background-color: #036bc0;
+//   color: white;
+//   width: 96%;
+//   height: 4%;
+//   padding: 2%;
+//   border-bottom: 1px solid white;
+//   display: flex;
+//   align-items: center;
+// }
+// .divImprivataContent,.divLdapContent{
+//   height: 90%;
+//   //overflow: auto;
+// }
+
+// .divAddImprivata,.divAddLdap{
+//   position: absolute;
+//   margin:3% 2%;
+//   bottom: 0;
+//   height: 8%; 
+//   width: 100%;
+// }
+
+// .divAddImprivata>button,.divAddLdap>button{
+//   width: 100%;
+//   margin-left: 2%  ;
+//   background-color: #036bc0;
+//   color: white;
+// }
+
+// .ldapList,.imprivataList {
+//   height: 7%;
+//   display: flex;
+//   align-items: center;
+//   border-bottom: 1px solid lightgray;
+// }
+
+// .ldapList:hover,.imprivataList:hover {
+//   background-color: lightgray;
+//   cursor: pointer;
+// }
+
+// .ldapList span,.imprivataList span {
+//   width: 90%; 
+//   padding-left: 2px;
+//   text-overflow: ellipsis;
+//   white-space: nowrap;
+//   overflow: hidden;
+// }
+
+// .icon-delete {
+//   display: none;
+//   float: right; 
+// }
+
+// .ldapList.active,.imprivataList.active {
+//   background-color: #036bc0;
+//   color:white;
+// }
+
+// .icon-delete.active {
+//   display: block;
+// }
+
+::ng-deep {
+  mat-tab-header {
+    background-color: #036bc0 !important;
+    color: #fff;
+  }
+
+  .mat-tab-label-content {
+    color: #fff;
+  }
+
+  .mat-tab-label-active {
+    border-bottom: 4px solid #fff;
+    opacity: 1 !important;
+  }
+
+  .mat-checkbox-checked .mat-checkbox-background {
+    background-color: #036bc0 !important;
+    border: 1px solid gray !important;
+  }
+
+  .mat-checkbox-checked.mat-accent .mat-checkbox-indeterminate.mat-accent,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #036bc0 !important
+  }
+
+  .mat-tree-node {
+    min-height: 30px !important;
+  }
+
+  textarea.mat-input-element {
+    padding: 0px 0 !important;
+  }
+
+  textarea {
+    resize: none !important;
+  }
+
+  .mat-checkbox-indeterminate .mat-checkbox-mixedmark {
+    transform: scaleX(1.1) scaleY(3.4) rotate(0) !important;
+  }
+
+  .mat-checkbox-mixedmark {
+    background-color: #036bc0 !important;
+    border-radius: 8px !important;
+  }
+
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #ffffff !important;
+    border: 2px solid gray !important;
+  }
+
+  .mat-radio-button.mat-accent .mat-radio-inner-circle{
+    background-color: #036bc0 !important;   
+  }
+  .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle{
+    border-color:  gray !important;
+  }
+  // .bottom-panel .mat-tab-group {
+  //   height : 100% !important;
+  // }
+ .mat-tab-body-wrapper {
+    height : 100% !important;
+  }
+
+}
+
+.header, .button, .applicationActive {
+  background-color: #036bc0;
+  color: white;
+}
+
+.success-popup {
+  z-index: 1;;
+  position: absolute;
+  width: 20%;
+  padding: .5%;
+  background: #70a470;
+  color: white;
+  text-align: center;
+  right: 1%;
+  transition: all 0.4s ease;
+  box-shadow: 0px 0px 10px -1px rgba(0, 0, 0, 0.75);
+}
+
+.error-popup-bg {
+  background: #ec6b78;
+}
+
+.list-item{
+  &:hover:not(.applicationActive) {    
+    background-color: lightgray;
+  }
+  cursor: pointer;
+}
+
+.ldap-list,.imprivata-list {
+  &:hover {
+    cursor: pointer;
+    background-color: lightgray;
+  }
+
+  mat-icon {
+    display: none !important;
+  }
+}
+
+.ldap-list.active,.imprivata-list.active {
+  background-color: #036bc0;
+  color: white;
+
+  mat-icon {
+    display: flex !important;
+  }
+}
+
+.card-form{
+  margin: 2em auto;
+  padding: 1em 2em 1em 2em;
+  background: #fafafa;
+  border-radius: 10px;
+  border: 1px solid #ebebeb;
+  box-shadow: rgba(0,0,0,0.14902) 0px 1px 1px 0px,rgba(0,0,0,0.09804) 0px 1px 2px 0px;
+}
+
+.custom-file-input:lang(en)~.custom-file-label::after{
+  content:"Upload Certificate" !important
+}

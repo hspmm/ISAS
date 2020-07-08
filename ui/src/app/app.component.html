@@ -1,0 +1,43 @@
+<!--The content below is only a placeholder and can be replaced.-->
+<!-- <nav mat-tab-nav-bar>    
+    <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" >{{link.label}} </a>
+  </nav> -->
+<!-- <mat-tab-group color="primary" [backgroundColor]="primary">
+  <mat-tab label="Roles"></mat-tab>
+  <mat-tab label="Users"></mat-tab>
+</mat-tab-group> -->
+
+<nav mat-tab-nav-bar class="nav-bar">
+  <!-- <a mat-tab-link *ngFor="let link of navLinks" [routerLink]="link.link" routerLinkActive #rla="routerLinkActive"
+    [active]="rla.isActive" *ngIf="link.index!=4 || settingsService.selectedSecurityModel.value==='LDAP'">{{link.label}} </a> -->
+
+    <div *ngFor="let link of navLinks">
+      <a class="nounderline" mat-tab-link [routerLink]="link.link" routerLinkActive #rla="routerLinkActive" [id]="link.id"
+      [active]="rla.isActive" *ngIf="link.index!=4 || settingsService.selectedSecurityModel.value==='LDAP' || settingsService.selectedSecurityModel.value==='Imprivata'">{{link.label}} </a>
+    </div>
+  <!-- <span mat-tab-link routerLinkActive #rla="routerLinkActive" [active]="rla.isActive" style="position: absolute;right: 5px;">
+
+    <i class="material-icons" style="color: white;font-size:48px;cursor: pointer;" [matMenuTriggerFor]="settings">
+      settings_applications
+    </i>
+
+    <mat-menu #settings="matMenu">
+      <button mat-menu-item (click)="SecurityModelSelection('LDAP')" [ngClass]="{'selectedSecurity':userService.selectedSecurityModel.value === 0 }">
+        <mat-icon>group</mat-icon>
+        <span>LDAP</span>
+      </button>
+      <button mat-menu-item (click)="SecurityModelSelection('Standalone')" [ngClass]="{'selectedSecurity':userService.selectedSecurityModel.value === 1}">
+        <mat-icon>person</mat-icon>
+        <span>Standalone</span>
+      </button>
+    </mat-menu> 
+  </span> -->
+  <a mat-tab-link routerLink="settings" style="position: absolute;right: 5px;opacity: 1;" id="mainTabSettings">
+    <!-- <i class="material-icons" style="color: white;font-size:48px;cursor: pointer;" >
+      settings_applications
+    </i> -->
+    <mat-icon style="color: white;font-size:45px;cursor: pointer;height: 45px;" >settings_applications</mat-icon>
+  </a>
+</nav>
+
+<router-outlet></router-outlet>

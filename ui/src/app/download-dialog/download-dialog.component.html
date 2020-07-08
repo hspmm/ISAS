@@ -1,0 +1,35 @@
+<h1 mat-dialog-title id="downloadTitleHeader">
+    Enter Password to Encrypt the Key
+  </h1>
+  <hr>
+  <div mat-dialog-content>
+    <form #passwordForm="ngForm" [formGroup]="downloadForm" (ngSubmit)="passwordForm.resetForm();"
+      autocomplete="off">
+      <mat-form-field class="col-12" id="formfieldPassword">
+        <input type="password" matInput formControlName="Password" placeholder="Password" required>
+        <mat-error *ngIf="downloadForm?.controls?.Password?.hasError('required')" id="errorPasswordRequired">Password
+          <strong>required</strong></mat-error>
+      <mat-error *ngIf="downloadForm?.controls?.Password?.hasError('minlength')" id="errorPasswordLength">Password must be atleast 8
+          characters length
+          </mat-error>
+      </mat-form-field>    
+      <mat-form-field class="col-12"  id="formfieldConfirmPassword">
+        <input type="password" matInput formControlName="ConfirmPassword" placeholder="Confirm Password" required>
+        <mat-error *ngIf="downloadForm?.controls?.ConfirmPassword?.hasError('required')" id="errorConfirmRequired">Confirm Password
+          <strong>required</strong></mat-error>
+        <mat-error
+          *ngIf="(!downloadForm?.controls?.ConfirmPassword?.hasError('required'))&&(downloadForm?.controls?.ConfirmPassword?.touched||downloadForm?.controls?.ConfirmPassword?.dirty) && (downloadForm?.controls?.ConfirmPassword?.hasError('mismatch'))" id="errorMismatch">
+          Password Mismatch</mat-error>
+      </mat-form-field>  
+      <div class="row col-12 pb-2 m-0">
+        <button mat-raised-button class="col-4 ml-2 button" type="button" [disabled]="downloadForm.invalid"
+          (click)="OnDownloadClick()" id="buttonPasswordDownload">
+          Download</button>
+        <button mat-raised-button class="col-4 ml-2 button" type="submit" (click)="OnCancelClick()"
+          id="buttonPasswordCancel">
+          Cancel</button>
+      </div>
+      <div class="row col-12 m-0 p-0" style="color:red">{{errorMessage}}</div>
+    </form>
+  </div>
+  

@@ -1,0 +1,94 @@
+::ng-deep {
+  mat-tab-header {
+    background-color: #036bc0 !important;
+    color: #fff;
+  }
+
+  .mat-tab-label-content {
+    color: #fff;
+  }
+
+  .mat-tab-label-active {
+    border-bottom: 4px solid #fff;
+    opacity: 1 !important;
+  }
+
+  .mat-checkbox-checked .mat-checkbox-background {
+    background-color: #036bc0 !important
+  }
+
+  .mat-checkbox-checked.mat-accent .mat-checkbox-indeterminate.mat-accent,
+  .mat-checkbox-indeterminate.mat-accent .mat-checkbox-background {
+    background-color: #036bc0 !important
+  }
+
+  .mat-tree-node {
+    min-height: 30px !important;
+  }
+
+  textarea.mat-input-element {
+    padding: 0px 0 !important;
+  }
+
+  textarea {
+    resize: none !important;
+  }
+}
+
+// .divMainContainer {
+//   width: 100%;
+//   height: 80%;
+// }
+
+// .divLeftContainer {
+//   width: 40%;
+//   height: 96%;
+//   margin: 2%;
+//   border: 1px solid black;
+//   float: left;
+// }
+
+// .divRightContainer {
+//   width: 45%;
+//   height: 96%;
+//   margin: 2% 2% 2% 0.2%;
+//   border: 1px solid black;
+//   float: left;
+// }
+
+// .divPrivilegesHeader {
+//   width: 96%;
+//   height: 3%;
+//   background-color: #036bc0;
+//   color: white;
+//   padding: 2%;
+//   text-align: center;
+// }
+
+// .divPrivilegesContainer,.divRoleContainer,.divUserContainer,.divLdapGroupContainer{
+//   height: 65vh;
+//   width: 98%;
+//   overflow: auto;
+//   margin-left: 1%;
+// }
+
+/* New Styles*/
+.header {
+  background-color: #036bc0;
+  color: white;
+}
+
+::ng-deep {
+  .mat-icon-button .mat-icon {
+    line-height: 18px !important;
+  }
+  .icon-expand {
+    line-height: 20px !important;
+  }
+  .icon-remove {
+    line-height: 16px !important;
+  }
+  button:focus {
+    outline: none !important;
+  }
+}

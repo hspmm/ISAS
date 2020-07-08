@@ -1,0 +1,62 @@
+<div class="container-fluid m-0 p-0">
+  <div class="row m-0 p-0">
+    <div class="col-12 col-md-2 mt-2">
+      <div class="m-0 border rounded overflow-hidden" style="height:80vh"> 
+        <div class="row m-0 w-100 p-2 header" id="divRoleListHeader">
+          <mat-icon>group</mat-icon>
+          <span> Roles List</span>
+        </div>
+        <div class="dropdown-divider mt-0"></div>
+        <div class="col-12 mb-2 p-0" style="height: 10%;" id="divRoleListSearch" >
+          <mat-form-field class="col-12">
+            <mat-label>Search Role</mat-label>
+            <input matInput type="text" maxlength="50" [(ngModel)]="searchText" (input)="onSearchRoleEvent()">
+            <button mat-button *ngIf="searchText" matSuffix mat-icon-button aria-label="Clear"
+              (click)="searchText=''">
+              <mat-icon>close</mat-icon>
+            </button>
+            <button mat-button matPrefix mat-icon-button aria-label="Search">
+              <mat-icon style="font-weight: bold;margin-right: 5px; font-size: large;">search</mat-icon>
+            </button>
+          </mat-form-field>
+        </div>
+        <div class="overflow-auto" style="height: 78%;" *ngIf="!searchText">
+        <div class="row m-0 p-2 border-bottom mt-0 role-list" *ngFor="let role of rolesList"
+          (click)="OnRoleClick(role.Role.RoleId)" [class.active]="rolesService.selectedRoleId.value===role.Role.RoleId"
+          id="divRoleList{{role.Role.RoleId}}" >
+          <div class="p-0 text-truncate" [ngClass]="{'col-10':rolesService.selectedRoleId.value===role.Role.RoleId}"
+            matTooltip={{role.Role.RoleName}}>{{role.Role.RoleName }}</div>
+          <mat-icon class="p-0 d-flex justify-content-end"
+            [ngClass]="{'active col-2':rolesService.selectedRoleId.value===role.Role.RoleId}"
+            (click)="OnRoleDeleteClick(role.Role.RoleId,role.Role.RoleName)">delete</mat-icon>
+        </div>
+        </div>
+        <div class="overflow-auto" style="height: 78%;" *ngIf="searchText">
+          <div class="row m-0 p-2 border-bottom mt-0 role-list" *ngFor="let role of searchResult"
+            (click)="OnRoleClick(role.Role.RoleId)" [class.active]="rolesService.selectedRoleId.value===role.Role.RoleId"
+            id="divRoleList{{role.Role.RoleId}}">
+            <div class="p-0 text-truncate" [ngClass]="{'col-10':rolesService.selectedRoleId.value===role.Role.RoleId}"
+              matTooltip={{role.Role.RoleName}}>{{role.Role.RoleName }}</div>
+            <mat-icon class="p-0 d-flex justify-content-end"
+              [ngClass]="{'active col-2':rolesService.selectedRoleId.value===role.Role.RoleId}"
+              (click)="OnRoleDeleteClick(role.Role.RoleId,role.Role.RoleName)" id="iconRoleDelete{{role.Role.RoleId}}">delete</mat-icon>
+          </div>
+          </div>
+        <label *ngIf="!rolesList">Loading...</label>
+        <label *ngIf="rolesList && rolesList.length==0">{{statusMessage}}</label>
+      </div>
+      <div class="row m-0 w-100 p-1 pt-2"  id="divRoleListAdd">
+        <button mat-raised-button class="col-12 button text-truncate overflow-hidden"
+          (click)="OnNewRoleCreationClick()">
+          <mat-icon>add</mat-icon>
+          Create New Role
+        </button>
+      </div>
+    </div>
+    <div class="col-12 col-md-10 mt-2">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+  <ngx-spinner bdColor="rgba(51,51,51,0.8)" size="medium" color="#fff" type="ball-clip-rotate-pulse">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
